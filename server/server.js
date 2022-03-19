@@ -1,8 +1,11 @@
 const express = require("express");
 const chats = require("./data/data");
 require("dotenv").config();
-const app = express();
+const bodyParser = require("body-parser");
 
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json(chats);
 });
