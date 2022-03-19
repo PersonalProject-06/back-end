@@ -5,12 +5,14 @@ const bodyParser = require("body-parser");
 
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.get("/", (req, res) => {
-  res.json(chats);
-});
 
-const PORT = process.env.PORT || 3000;
+app.get("/", (req, res) => {
+  res.json("chats");
+});
+app.get("/chat", (req, res) => {
+  res.send(chats);
+});
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log("servuer running");
