@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300&display=swap');
+
+
+.App {
+    min-height: 100vh;
+    display: flex;
+    background-image: url("../../images/logging-off.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
