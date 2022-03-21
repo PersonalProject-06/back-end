@@ -2,10 +2,11 @@ const express = require("express");
 const chats = require("./data/data");
 require("dotenv").config();
 const bodyParser = require("body-parser");
+const connectDB = require("./config/db");
 
 const app = express();
 app.use(bodyParser.json());
-
+connectDB();
 app.get("/", (req, res) => {
   res.json("chats");
 });
