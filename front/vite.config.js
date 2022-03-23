@@ -5,7 +5,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   server:{
     proxy:{
-      "/chat/":"http://localhost:5000",
+      "/api/user/":"http://localhost:5000",
+      "/api/user/login/":"http://localhost:5000",
     }
   },
   plugins: [react()],

@@ -1,18 +1,16 @@
-const express = require("express");
-const chats = require("./data/data");
 require("dotenv").config();
+const express = require("express");
 const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
-
-const app = express();
-app.use(bodyParser.json());
 connectDB();
-app.get("/", (req, res) => {
-  res.json("chats");
-});
-app.get("/chat", (req, res) => {
-  res.send(chats);
-});
+const app = express();
+const UserRouter = require("./routes/userRoutes");
+const {notFound ,errorHandler} =require("./middlewares/errorMiddelwares") 
+app.use(express.json());
+app.use(bodyParser.json());
+app.use("/api/user", UserRouter);
+app.use(notFound)
+app.use(errorHandler)
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
