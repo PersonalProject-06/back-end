@@ -5,12 +5,14 @@ const connectDB = require("./config/db");
 connectDB();
 const app = express();
 const UserRouter = require("./routes/userRoutes");
-const {notFound ,errorHandler} =require("./middlewares/errorMiddelwares") 
+const { notFound, errorHandler } = require("./middlewares/errorMiddelwares");
+const chatRoutes = require("./routes/chatRoutes");
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/api/user", UserRouter);
-app.use(notFound)
-app.use(errorHandler)
+app.use("/api/chat", chatRoutes);
+app.use(notFound);
+app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
