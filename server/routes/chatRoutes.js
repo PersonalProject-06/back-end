@@ -9,7 +9,6 @@ const {
 } = require("../controllers/chatControllers");
 
 const chatRoutes = require("express").Router();
-
 chatRoutes.route("/").post(protect, accessChat);
 chatRoutes.route("/").get(protect, getAllChats);
 chatRoutes.route("/group").post(protect, createGroup);
