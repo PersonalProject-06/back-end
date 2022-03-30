@@ -25,6 +25,7 @@ import { ChatContext } from "../../context/ChatProvider";
 import axios from "axios";
 import UserModal from "./UserModal";
 import Loading from "./Loading";
+import UserListItem from "../UserListItem/UserListItem";
 const SideDrawer = () => {
   const toast = useToast();
   const [search, setSearch] = useState("");
@@ -78,6 +79,7 @@ const SideDrawer = () => {
       return;
     }
   };
+  const accessChat = (iserId) => {};
   return (
     <>
       <Box
@@ -138,7 +140,17 @@ const SideDrawer = () => {
                 <img src={searchSvg} style={{ width: "20px" }} />
               </Button>
             </Box>
-            {loading ? <Loading /> : <span>result</span>}
+            {loading ? (
+              <Loading />
+            ) : (
+              searchResult?.map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleChat={() => accessChat(user._id)}
+                />
+              ))
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
