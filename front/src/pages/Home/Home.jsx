@@ -20,7 +20,7 @@ const Home = () => {
     }
   }, []);
   return (
-    <Container maxW={"xl"} centerContent>
+    <Container maxW={"xl"} centerContent style={{color:"grey"}}>
       <Box
         d="flex"
         justifyContent={"center"}

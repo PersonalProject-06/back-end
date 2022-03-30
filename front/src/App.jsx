@@ -4,7 +4,7 @@ import "../src/css/app.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/chat" element={<ChatPage />} />

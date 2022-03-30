@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useToast } from "@chakra-ui/react";
+import { Button, Stack, useToast } from "@chakra-ui/react";
 import { ChatContext } from "../../context/ChatProvider";
-import { Box } from "@chakra-ui/react";
+import { Box, Text ,  useColorMode, } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import Loading from "./Loading";
 const MyChats = () => {
+  const { colorMode } = useColorMode();
   const [loggedUser, setLoggedUser] = useState(null);
   const {
     user: { token },
@@ -13,6 +16,7 @@ const MyChats = () => {
     slectedChat,
   } = useContext(ChatContext);
   const toast = useToast();
+
   const FetchAllCHats = async () => {
     try {
       const config = {
@@ -39,13 +43,16 @@ const MyChats = () => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     FetchAllCHats();
   }, []);
+  const getSender = (loggedUser, users) => {
+    return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
+  };
   return (
     <Box
       d={{ base: slectedChat ? "none" : "flex", md: "flex" }}
-      flexDir="cloumn"
+      flexDir={"column"}
       alignItems="center"
       p={3}
-      bg="white"
+      bg={colorMode === "light" ? "white" : "gray.800"}
       w={{ base: "100%", md: "31%" }}
       borderRadius="lg"
       borderWidth={"1px"}
@@ -57,9 +64,53 @@ const MyChats = () => {
         fontFamily="work-sans"
         d="flex"
         w="100%"
-        justifyContent={"space-between"}
+        justifyContent="space-between"
         alignItems="center"
-      >mzsa</Box>
+      >
+        My Chats
+        <Button
+          d="flex"
+          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+          rightIcon={<AddIcon />}
+        >
+          New Group Chat
+        </Button>
+      </Box>
+      <Box
+        d="flex"
+        flexDir={"column"}
+        p={3}
+        bg={colorMode === "light" ? "white" : "gray.800"}
+        w="100%"
+        h="100%"
+        borderRadius={"lg"}
+        overflow="hidden"
+      >
+        {chats.length ? (
+          <Stack overflowX={"auto"}>
+            {chats.map((chat) => (
+              <Box
+                onClick={() => setSlectedChat(chat)}
+                cursor="pointer"
+                bg={slectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                color={slectedChat === chat ? "white" : "black"}
+                px={3}
+                py={2}
+                borderRadius={"lg"}
+                key={chat._id}
+              >
+                <Text>
+                  {!chat?.isGroupChat
+                    ? getSender(loggedUser, chat.users)
+                    : chat?.chatName}
+                </Text>
+              </Box>
+            ))}
+          </Stack>
+        ) : (
+          <Loading />
+        )}
+      </Box>
     </Box>
   );
 };

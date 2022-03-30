@@ -15,8 +15,12 @@ import {
   DrawerHeader,
   DrawerBody,
   Input,
-  Spinner
+  Spinner,
+  Switch,
+  useColorMode,
 } from "@chakra-ui/react";
+import Cookies from 'js-cookie'
+
 import { useDisclosure } from "@chakra-ui/hooks";
 import { useState, useContext, useEffect } from "react";
 import searchSvg from "../../../images/search.svg";
@@ -27,24 +31,28 @@ import axios from "axios";
 import UserModal from "./UserModal";
 import Loading from "./Loading";
 import UserListItem from "../UserListItem/UserListItem";
+
 const SideDrawer = () => {
   const toast = useToast();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(null);
+  const { colorMode, toggleColorMode } = useColorMode();
+
   const {
     user: { name, pic, email, token },
     setSlectedChat,
     chats,
     setChats,
+    
   } = useContext(ChatContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const logoutHanlder = () => {
     localStorage.removeItem("userInfo");
     window.location.reload();
   };
-
+console.log(colorMode);
   const handleSearch = async () => {
     if (search === "") {
       toast({
@@ -70,7 +78,6 @@ const SideDrawer = () => {
       setSearchResult(data);
       return;
     } catch (error) {
-      console.log(error);
       toast({
         title: "Something went wrong try again!",
         status: "error",
@@ -114,13 +121,18 @@ const SideDrawer = () => {
     }
   };
 
+  const handleDarkMode = (e) => {
+    
+    
+    toggleColorMode();
+  };
   return (
     <>
       <Box
         d="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg="white"
+        bg= {colorMode === "light" ? "white" : "gray.800"}
         w="100%"
         p="5px 10px"
         borderWidth="5px"
@@ -137,6 +149,12 @@ const SideDrawer = () => {
           Freely-Talk
         </Text>
         <div>
+          <Switch
+            colorScheme="teal"
+            size="md"
+            isChecked={colorMode === "light" ? false : true}
+            onChange={handleDarkMode}
+          />
           <Menu>
             <MenuButton p={1}>
               <BellIcon fontSize={"2xl"} m="1" />
@@ -185,7 +203,7 @@ const SideDrawer = () => {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d='flex'/>}
+            {loadingChat && <Spinner ml="auto" d="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
