@@ -19,33 +19,75 @@ import {
 import { useDisclosure } from "@chakra-ui/hooks";
 import { useState, useContext } from "react";
 import searchSvg from "../../../images/search.svg";
+import { useToast } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatContext } from "../../context/ChatProvider";
+import axios from "axios";
 import UserModal from "./UserModal";
+import Loading from "./Loading";
 const SideDrawer = () => {
+  const toast = useToast();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(null);
   const {
-    user: { name, pic, email },
+    user: { name, pic, email, token },
   } = useContext(ChatContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const logoutHanlder = () => {
     localStorage.removeItem("userInfo");
     window.location.reload();
   };
-  const handleSearch = () => {};
+
+  const handleSearch = async () => {
+    if (search === "") {
+      toast({
+        title: "Please Fill  the search fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_URL}/api/user/?search=${search}`,
+        config
+      );
+      setLoading(false);
+      setSearchResult(data);
+      return;
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Something went wrong",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+
+      setLoading(false);
+      return;
+    }
+  };
   return (
     <>
       <Box
         d="flex"
-        justifyContent={"space-between"}
+        justifyContent="space-between"
         alignItems="center"
-        bg={"white"}
+        bg="white"
         w="100%"
         p="5px 10px"
-        borderWidth={"5px"}
+        borderWidth="5px"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant={"ghost"} onClick={onOpen}>
@@ -92,10 +134,11 @@ const SideDrawer = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button onClick={handleSearch}>
+              <Button onClick={handleSearch} isLoading={loading}>
                 <img src={searchSvg} style={{ width: "20px" }} />
               </Button>
             </Box>
+            {loading ? <Loading /> : <span>result</span>}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

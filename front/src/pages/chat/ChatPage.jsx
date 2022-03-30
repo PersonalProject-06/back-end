@@ -5,7 +5,6 @@ import { Box } from "@chakra-ui/react";
 import { SideDrawer, MyChats, ChatBox } from "../../components/index.js";
 const ChatPage = () => {
   const { user } = useContext(ChatContext);
-  console.log(user);
   return (
     <div style={{ width: "100%" }}>
       {user && <SideDrawer />}

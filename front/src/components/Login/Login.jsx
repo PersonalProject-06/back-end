@@ -60,7 +60,7 @@ const Login = () => {
       const { email, password } = LoginData;
 
       const { data } = await axios.post(
-        "/api/user/login/",
+        `${import.meta.env.VITE_APP_URL}/api/user/login/`,
         { email, password },
         config
       );
@@ -75,7 +75,6 @@ const Login = () => {
       setLoading(false);
       navigateTo("/chat");
     } catch (error) {
-  
       toast({
         title: "An Error Occured ",
         status: "warning",
@@ -127,9 +126,8 @@ const Login = () => {
         onClick={submitHandler}
         isLoading={loading}
       >
-     Login
+        Login
       </Button>
-     
     </VStack>
   );
 };

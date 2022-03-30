@@ -15,6 +15,7 @@ const SignUp = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigateTo = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -71,7 +72,7 @@ const SignUp = () => {
       data.append("file", pics);
       data.append("upload_preset", "chatApp");
       data.append("cloud_name", "daseuavqf");
-      fetch("https://api.cloudinary.com/v1_1/daseuavqf/image/upload", {
+      fetch(import.meta.env.VITE_APP_CLOUDINARY, {
         method: "post",
         body: data,
       })
@@ -133,7 +134,7 @@ const SignUp = () => {
       const { name, email, password, pic } = formData;
 
       const { data } = await axios.post(
-        "/api/user/",
+        `${import.meta.env.VITE_APP_URL}/api/user/`,
         { name, email, password, pic },
         config
       );
@@ -149,7 +150,6 @@ const SignUp = () => {
       setLoading(false);
       navigateTo("/chat");
     } catch (error) {
-      
       toast({
         title: "An Error Occured ",
         status: "warning",

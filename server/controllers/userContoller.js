@@ -59,10 +59,8 @@ const allUsers = asyncHanlder(async (req, res) => {
         ],
       }
     : {};
-  const users = await User.find(keyWord)
-    .find({ _id: { $ne: req.user._d } })
-    .exec();
-  res.json(users);
+  const users = await User.find(keyWord).find({ _id: { $ne: req.user._d } });
+  res.status(201).json(users);
 });
 
 module.exports = { registerUser, userAuth, allUsers };
