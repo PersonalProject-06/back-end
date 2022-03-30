@@ -3,8 +3,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { ChatContext } from "../../context/ChatProvider.jsx";
 import { Box } from "@chakra-ui/react";
 import { SideDrawer, MyChats, ChatBox } from "../../components/index.js";
+
 const ChatPage = () => {
-  const { user } = useContext(ChatContext);
+  const { user, setSlectedChat, chats, setChats, slectedChat } =
+    useContext(ChatContext);
+
   return (
     <div style={{ width: "100%" }}>
       {user && <SideDrawer />}

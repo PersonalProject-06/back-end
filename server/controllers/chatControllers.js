@@ -43,7 +43,7 @@ const accessChat = asyncHanlder(async (req, res) => {
 
 const getAllChats = asyncHanlder(async (req, res) => {
   try {
-    const allchats = Chat.find({
+    let allchats = await Chat.find({
       users: { $elemMatch: { $eq: req.user._id } },
     })
       .populate("users", "-password")
@@ -54,7 +54,7 @@ const getAllChats = asyncHanlder(async (req, res) => {
       path: "latestMessage.sender",
       select: "name pic email",
     });
-    res.status(200).json(allchats);
+    return res.status(200).json(allchats);
   } catch (error) {
     res.status(400);
     throw new Error(error.message);
