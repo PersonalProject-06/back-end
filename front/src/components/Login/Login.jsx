@@ -60,7 +60,7 @@ const Login = () => {
       const { email, password } = LoginData;
 
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_URL}/api/user/login/`,
+        `/api/user/login/`,
         { email, password },
         config
       );

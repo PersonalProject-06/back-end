@@ -10,12 +10,7 @@ const { notFound, errorHandler } = require("./middlewares/errorMiddelwares");
 const chatRoutes = require("./routes/chatRoutes");
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: process.env.ORIGIN_URL,
-    credentials: true,
-  })
-);
+
 app.use("/api/user", UserRouter);
 app.use("/api/chat", chatRoutes);
 app.use(notFound);

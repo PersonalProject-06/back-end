@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Stack, useToast } from "@chakra-ui/react";
 import { ChatContext } from "../../context/ChatProvider";
-import { Box, Text ,  useColorMode, } from "@chakra-ui/react";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import Loading from "./Loading";
 const MyChats = () => {
@@ -23,7 +23,7 @@ const MyChats = () => {
         headers: { Authorization: `Bearer ${token}` },
       };
       const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_URL}/api/chat`,
+        `/api/chat/`,
         config
       );
       setChats(data);

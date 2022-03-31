@@ -59,7 +59,7 @@ const allUsers = asyncHanlder(async (req, res) => {
         ],
       }
     : {};
-  const users = await User.find(keyWord).find({ _id: { $ne: req.user._d } });
+  const users = await User.find(keyWord).find({ _id: { $ne: req.user._id } });
   res.status(201).json(users);
 });
 

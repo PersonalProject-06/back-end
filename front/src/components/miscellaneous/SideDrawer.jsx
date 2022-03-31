@@ -19,10 +19,9 @@ import {
   Switch,
   useColorMode,
 } from "@chakra-ui/react";
-import Cookies from 'js-cookie'
 
 import { useDisclosure } from "@chakra-ui/hooks";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import searchSvg from "../../../images/search.svg";
 import { useToast } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
@@ -45,14 +44,13 @@ const SideDrawer = () => {
     setSlectedChat,
     chats,
     setChats,
-    
   } = useContext(ChatContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const logoutHanlder = () => {
     localStorage.removeItem("userInfo");
     window.location.reload();
   };
-console.log(colorMode);
+
   const handleSearch = async () => {
     if (search === "") {
       toast({
@@ -70,10 +68,7 @@ console.log(colorMode);
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_URL}/api/user/?search=${search}`,
-        config
-      );
+      const { data } = await axios.get(`/api/user/?search=${search}`, config);
       setLoading(false);
       setSearchResult(data);
       return;
@@ -99,11 +94,7 @@ console.log(colorMode);
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_URL}/api/chat/`,
-        { userId },
-        config
-      );
+      const { data } = await axios.post(`/api/chat/`, { userId }, config);
       if (!chats.find((chat) => chat._id === data._id)) {
         setChats([data, ...chats]);
       }
@@ -111,6 +102,7 @@ console.log(colorMode);
       setLoadingChat(false);
       onClose();
     } catch (error) {
+      console.log(error);
       toast({
         title: "Something went wrong try again!",
         status: "error",
@@ -122,8 +114,6 @@ console.log(colorMode);
   };
 
   const handleDarkMode = (e) => {
-    
-    
     toggleColorMode();
   };
   return (
@@ -132,7 +122,7 @@ console.log(colorMode);
         d="flex"
         justifyContent="space-between"
         alignItems="center"
-        bg= {colorMode === "light" ? "white" : "gray.800"}
+        bg={colorMode === "light" ? "white" : "gray.800"}
         w="100%"
         p="5px 10px"
         borderWidth="5px"
@@ -146,7 +136,7 @@ console.log(colorMode);
           </Button>
         </Tooltip>
         <Text fontSize={"2xl"} fontFamily="Work sans">
-          Freely-Talk
+          Messanger
         </Text>
         <div>
           <Switch
