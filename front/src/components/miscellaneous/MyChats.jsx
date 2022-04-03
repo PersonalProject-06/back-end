@@ -5,6 +5,7 @@ import { ChatContext } from "../../context/ChatProvider";
 import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import Loading from "./Loading";
+import GroupChatModal from "./GroupChatModal";
 const MyChats = () => {
   const { colorMode } = useColorMode();
   const [loggedUser, setLoggedUser] = useState(null);
@@ -68,6 +69,9 @@ const MyChats = () => {
         alignItems="center"
       >
         My Chats
+        <GroupChatModal>
+
+     
         <Button
           d="flex"
           fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -75,6 +79,7 @@ const MyChats = () => {
         >
           New Group Chat
         </Button>
+        </GroupChatModal>
       </Box>
       <Box
         d="flex"
