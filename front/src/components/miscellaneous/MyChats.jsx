@@ -6,7 +6,7 @@ import { Box, Text, useColorMode } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import Loading from "./Loading";
 import GroupChatModal from "./GroupChatModal";
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
   const { colorMode } = useColorMode();
   const [loggedUser, setLoggedUser] = useState(null);
   const {
@@ -43,7 +43,7 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     FetchAllCHats();
-  }, []);
+  }, [fetchAgain]);
   const getSender = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
   };

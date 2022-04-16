@@ -15,7 +15,10 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const UserModal = ({ name, pic, email, children }) => {
+const UserModal = ({ name, pic, email, user, children }) => {
+  if (user) {
+    var { name, pic, email } = user;
+  }
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
