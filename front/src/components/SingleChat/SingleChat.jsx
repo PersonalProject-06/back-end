@@ -21,7 +21,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const [socketConnected,setSocketConnected] = useState(false)
+  const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
   const { user, setSlectedChat, slectedChat } = useContext(ChatContext);
   const getSender = (loggedUser, users) => {
@@ -46,7 +46,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       setMessages(data);
       setLoading(false);
-      socket.emit("join chat",slectedChat._id)
+      socket.emit("join chat", slectedChat._id);
     } catch (error) {
       setLoading(false);
       toast({
@@ -77,7 +77,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        console.log(data);
+       socket.emit("new message",data)
 
         setMessages([...messages, data]);
       } catch (error) {
@@ -95,17 +95,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setNewMessage(e.target.value);
   };
   useEffect(() => {
-    socket = io(ENDPOINT)
-    socket.emit("setup",user)
-    socket.on("connection",(data)=>{
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", (data) => {
       console.log(data);
-      setSocketConnected(true)
-    })
-
+      setSocketConnected(true);
+    });
   }, []);
   useEffect(() => {
     fetchMessages();
+    selectedChatCompare = slectedChat;
   }, [slectedChat]);
+  useEffect(() => {
+    socket.on("message recived", (newMessageRecived) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecived.chat._id
+      ) {
+        // notification
+      } else {
+        setMessages([...messages, newMessageRecived]);
+      }
+    });
+  });
   return (
     <>
       {slectedChat ? (

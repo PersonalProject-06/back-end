@@ -41,5 +41,10 @@ io.on("connection", (socket) => {
   });
   socket.on("new message", (newMessageRecived) => {
     let chat = newMessageRecived.chat;
+    if (!chat.users) return console.log("chat.users not defind");
+    chat.users.forEach((user) => {
+      if (user._id == newMessageRecived.sender._id) return;
+      socket.in(user._id).emit("message recived", newMessageRecived);
+    });
   });
 });
