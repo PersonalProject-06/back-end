@@ -4,10 +4,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "https://morning-falls-66881.herokuapp.com",
         changeOrigin: true,
         rewrite: (path) => {
-          console.log(path);
+  
           return path.replace("/^/api/", "");
         },
       },

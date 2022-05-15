@@ -18,7 +18,7 @@ import axios from "axios";
 import UpdatedGroupChatModal from "../miscellaneous/UpdatedGroupChatModal";
 import ScrollableChat from "../miscellaneous/ScrollableChat";
 import io from "socket.io-client";
-const ENDPOINT = import.meta.env.VITE_APP_SERVER;
+const ENDPOINT = "https://morning-falls-66881.herokuapp.com";
 console.log(ENDPOINT);
 let socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
