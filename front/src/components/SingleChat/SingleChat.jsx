@@ -18,7 +18,8 @@ import axios from "axios";
 import UpdatedGroupChatModal from "../miscellaneous/UpdatedGroupChatModal";
 import ScrollableChat from "../miscellaneous/ScrollableChat";
 import io from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = import.meta.env.VITE_APP_SERVER;
+console.log(ENDPOINT);
 let socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
