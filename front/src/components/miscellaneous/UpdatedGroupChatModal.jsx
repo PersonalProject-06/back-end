@@ -21,7 +21,7 @@ import UserBadgeItem from "../UserListItem/UserBadgeItem";
 import { ChatContext } from "../../context/ChatProvider";
 import { ViewIcon } from "@chakra-ui/icons";
 import UserListItem from "../UserListItem/UserListItem";
-const UpdatedGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdatedGroupChatModal = ({ fetchAgain, setFetchAgain ,fetchMessages }) => {
   const [GroupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -64,7 +64,7 @@ const UpdatedGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       userObject._id === user._id ? setSlectedChat() : setSlectedChat(data);
       setLoading(false);
       setFetchAgain(!fetchAgain);
-      console.log(data);
+      fetchMessages()
     } catch (error) {
       console.log(error);
       setLoading(false);

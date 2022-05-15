@@ -19,6 +19,27 @@ app.use(notFound);
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log("servuer running");
+const server = app.listen(PORT, () => {
+  console.log("server running");
+});
+
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+io.on("connection", (socket) => {
+  socket.on("setup", (userData) => {
+    console.log(userData._id);
+    socket.join(userData._id);
+    socket.emit("connected");
+  });
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log("user joind chat ", room);
+  });
+  socket.on("new message", (newMessageRecived) => {
+    let chat = newMessageRecived.chat;
+  });
 });

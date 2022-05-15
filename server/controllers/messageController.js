@@ -25,6 +25,7 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
       latestMessage: message,
     });
     res.json(message);
+    return;
   } catch (error) {
     res.status(400);
     throw new Error(error);
@@ -32,7 +33,16 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
 });
 
 const allMessages = expressAsyncHandler(async (req, res) => {
-  
+  try {
+    const messages = await Message.find({ chat: req.params.chatId })
+      .populate("sender", "name pic email")
+      .populate("chat");
+    res.json(messages);
+    return;
+  } catch (error) {
+    res.status(400);
+    throw new Error(error);
+  }
 });
 
 module.exports = { sendMessage, allMessages };
