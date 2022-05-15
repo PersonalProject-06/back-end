@@ -40,10 +40,12 @@ const SideDrawer = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   const {
-    user: { name, pic, email, token },
+    user: { _id, name, pic, email, token },
     setSlectedChat,
     chats,
     setChats,
+    notifications,
+    setNotifications,
   } = useContext(ChatContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const logoutHanlder = () => {
@@ -51,6 +53,9 @@ const SideDrawer = () => {
     window.location.reload();
   };
 
+  const getSender = (loggedUser, users) => {
+    return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
+  };
   const handleSearch = async () => {
     if (search === "") {
       toast({
@@ -149,6 +154,29 @@ const SideDrawer = () => {
             <MenuButton p={1}>
               <BellIcon fontSize={"2xl"} m="1" />
             </MenuButton>
+            <MenuList pl={2}>
+              {!notifications.length && "No New Messages"}
+              {notifications.map((notification) => {
+                return (
+                  <MenuItem
+                    key={notification._id}
+                    onClick={() => {
+                      setSlectedChat(notification.chat);
+                      setNotifications(
+                        notification.filter((n) => n !== notification)
+                      );
+                    }}
+                  >
+                    {notification.chat.isGroupChat
+                      ? `New Message in ${notification.chat.chatName}`
+                      : `New Message from ${getSender(
+                          { _id, name },
+                          notification.chat.users
+                        )}`}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
           </Menu>
           <Menu>
             {" "}

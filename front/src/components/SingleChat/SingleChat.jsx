@@ -8,6 +8,7 @@ import {
   Spinner,
   Text,
   useToast,
+  useColorMode,
 } from "@chakra-ui/react";
 import animationData from "../../animations/3759-typing.json";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -26,8 +27,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const { colorMode, toggleColorMode } = useColorMode();
   const toast = useToast();
-  const { user, setSlectedChat, slectedChat } = useContext(ChatContext);
+  const { user, setSlectedChat, slectedChat, notifications, setNotifications } =
+    useContext(ChatContext);
   const getSender = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
   };
@@ -96,6 +99,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+  console.log(notifications);
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     if (!socketConnected) return;
@@ -131,7 +135,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecived.chat._id
       ) {
-        // notification
+        if (!notifications.includes(newMessageRecived)) {
+          setNotifications([...messages, newMessageRecived]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageRecived]);
       }
@@ -180,11 +187,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             flexDir={"column"}
             justifyContent="flex-end"
             p={3}
-            bg="#E8E8E8"
+            bg={colorMode === "dark" ? "#2D3748" : "#E8E8E8"}
             w="100%"
             h={"100%"}
             borderRadius="lg"
             overflowY={"hidden"}
+            color="#000"
           >
             {loading ? (
               <Spinner
@@ -218,9 +226,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
+
               <Input
                 variant={"filled"}
-                bg="#E0E0E0"
+                color={colorMode === "dark" ? "#fff" : "#E8E8E8"}
+                bg={colorMode === "dark" ? "#4A5568" : "#E8E8E8"}
                 placeholder="Type a message"
                 value={newMessage}
                 onChange={typingHandler}
