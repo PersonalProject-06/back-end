@@ -22,6 +22,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const toast = useToast();
   const { user, setSlectedChat, slectedChat } = useContext(ChatContext);
   const getSender = (loggedUser, users) => {
@@ -77,7 +79,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-       socket.emit("new message",data)
+        socket.emit("new message", data);
 
         setMessages([...messages, data]);
       } catch (error) {
@@ -93,14 +95,21 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
+    if (!socketConnected) return;
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", slectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    let period = 3000;
+    
   };
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
-    socket.on("connection", (data) => {
-      console.log(data);
-      setSocketConnected(true);
-    });
+    socket.on("connection", (data) => setSocketConnected(true));
+    socket.on("typing", (_) => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
   }, []);
   useEffect(() => {
     fetchMessages();

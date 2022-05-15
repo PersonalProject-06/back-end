@@ -39,6 +39,8 @@ io.on("connection", (socket) => {
     socket.join(room);
     console.log("user joind chat ", room);
   });
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
   socket.on("new message", (newMessageRecived) => {
     let chat = newMessageRecived.chat;
     if (!chat.users) return console.log("chat.users not defind");
