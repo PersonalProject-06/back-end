@@ -19,7 +19,8 @@ import {
   Switch,
   useColorMode,
 } from "@chakra-ui/react";
-
+import {Effect} from 'react-notification-badge';
+import NotificationBadge from 'react-notification-badge';
 import { useDisclosure } from "@chakra-ui/hooks";
 import { useState, useContext } from "react";
 import searchSvg from "../../../images/search.svg";
@@ -152,6 +153,7 @@ const SideDrawer = () => {
           />
           <Menu>
             <MenuButton p={1}>
+            <NotificationBadge count={notifications.length} effect={Effect.SCALE}/>
               <BellIcon fontSize={"2xl"} m="1" />
             </MenuButton>
             <MenuList pl={2}>
@@ -163,7 +165,7 @@ const SideDrawer = () => {
                     onClick={() => {
                       setSlectedChat(notification.chat);
                       setNotifications(
-                        notification.filter((n) => n !== notification)
+                        notifications.filter((n) => n !== notification)
                       );
                     }}
                   >
