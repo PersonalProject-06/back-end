@@ -9,7 +9,9 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import animationData from "../../animations/3759-typing.json";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import Lottie from "react-lottie";
 import UserModal from "../miscellaneous/UserModal";
 import axios from "axios";
 import UpdatedGroupChatModal from "../miscellaneous/UpdatedGroupChatModal";
@@ -116,7 +118,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", (data) => setSocketConnected(true));
-    socket.on("typing", (_) => setIsTyping(true));
+    socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
   }, []);
   useEffect(() => {
@@ -198,7 +200,24 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </div>
             )}
             <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-              {isTyping ? <div>loading...</div> : <></>}
+              {isTyping ? (
+                <div>
+                  <Lottie
+                    options={{
+                      loop: true,
+                      autoplay: true,
+                      animationData: animationData,
+                      rendererSettings: {
+                        preserveAspectRatio: "xMidYMid slice",
+                      },
+                    }}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
               <Input
                 variant={"filled"}
                 bg="#E0E0E0"
