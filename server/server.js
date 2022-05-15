@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   app.get("/", (req, res) => {
-    res.send("API Is running");
+    res.send("API Is run");
   });
 }
 
