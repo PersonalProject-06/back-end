@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use("/api/user", UserRouter);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
-//------------deployment---------------
+//-------------------------deployment----------------------------
 
 const __dirname1 = path.resolve();
 if (process.env.NODE_ENV === "production") {
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-//------------deployment---------------
+//-------------------------deployment----------------------------
 app.use(notFound);
 app.use(errorHandler);
 
